@@ -161,9 +161,24 @@ const GameBoard = () => {
       selectedQuestion &&
       !selectedQuestion.isDailyDouble
     ) {
+      const handleTimesUp = () => {
+        setCategories((prev) =>
+          prev.map((category) => ({
+            ...category,
+            questions: category.questions.map((q) =>
+              q.id === selectedQuestion.id ? { ...q, isAnswered: true } : q
+            ),
+          }))
+        );
+
+        setSelectedQuestion(null);
+        setAnsweringPlayer(null);
+        setAttemptedPlayers([]);
+        setWagerSubmitted(false);
+      };
       handleTimesUp();
     }
-  }, [attemptedPlayers, players.length]);
+  }, [attemptedPlayers, players.length, selectedQuestion]);
 
   // Player name editing
   const handlePlayerNameEdit = (playerId: number) => {
@@ -335,7 +350,6 @@ const GameBoard = () => {
     setAnsweringPlayer(null);
   };
 
-  // Time's up handling
   const handleTimesUp = () => {
     if (!selectedQuestion) return;
 
@@ -428,7 +442,7 @@ const GameBoard = () => {
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <Label className="text-white">
-              {players.find((p) => p.id === answeringPlayer)?.name}'s Wager:
+              {players.find((p) => p.id === answeringPlayer)?.name}&apos;s Wager:
             </Label>
             <div className="relative flex-1">
               <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-400 h-4 w-4" />
@@ -471,14 +485,14 @@ const GameBoard = () => {
   // Add import/export functions before the return statement
   const handleExportQuestions = () => {
     try {
-      const exportData = categories.map(category => ({
+      const exportData = categories.map((category) => ({
         ...category,
-        questions: category.questions.map(question => ({
+        questions: category.questions.map((question) => ({
           id: question.id,
           answer: question.answer,
           question: question.question,
           value: question.value,
-        }))
+        })),
       }));
       const jsonString = JSON.stringify(exportData, null, 2);
       const blob = new Blob([jsonString], { type: "application/json" });
@@ -488,7 +502,7 @@ const GameBoard = () => {
       link.download = "jeopardy-questions.json";
       link.click();
       URL.revokeObjectURL(url);
-      
+
       alert("Game data exported successfully!");
     } catch (error) {
       console.error("Export error:", error);
@@ -515,7 +529,9 @@ const GameBoard = () => {
                 "questions" in cat &&
                 Array.isArray(cat.questions) &&
                 cat.questions.every(
-                  (q) =>
+                  (q: unknown): boolean => 
+                    typeof q === 'object' && 
+                    q !== null && 
                     "id" in q &&
                     "answer" in q &&
                     "question" in q &&
@@ -525,7 +541,6 @@ const GameBoard = () => {
           ) {
             setCategories(importedCategories);
             alert("Game data imported successfully!");
-
           } else {
             alert("Invalid JSON format for Jeopardy questions");
           }

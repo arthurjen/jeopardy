@@ -533,48 +533,20 @@ const GameBoard = () => {
     <div className="min-h-screen bg-blue-900 p-6 overflow-hidden">
       <AnimatePresence mode="wait">
         {!gameStarted ? (
-          <motion.div
+          <div
             key="start-screen"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 0.3 }}
             className="flex flex-col items-center justify-center min-h-[80vh] text-center"
           >
-            <motion.div
-              className="max-w-3xl w-full bg-blue-800 rounded-xl shadow-2xl p-8 border-4 border-yellow-400"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.h1
-                className="text-white text-6xl font-bold mb-6 tracking-tight [text-shadow:_0_4px_8px_rgba(0,0,0,0.5)]"
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.3 }}
-              >
+            <div className="max-w-3xl w-full bg-blue-800 rounded-xl shadow-2xl p-8 border-4 border-yellow-400">
+              <h1 className="text-white text-6xl font-bold mb-6 tracking-tight [text-shadow:_0_4px_8px_rgba(0,0,0,0.5)]">
                 JEOPARDY!
-              </motion.h1>
-              <motion.p
-                className="text-yellow-300 text-xl mb-6 [text-shadow:_0_2px_4px_rgba(0,0,0,0.5)]"
-                initial={{ y: -15, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.3 }}
-              >
+              </h1>
+              <p className="text-yellow-300 text-xl mb-6 [text-shadow:_0_2px_4px_rgba(0,0,0,0.5)]">
                 Design and host your own Jeopardy game.
-              </motion.p>
-              <motion.div
-                className="w-full h-1 bg-yellow-400 mb-8"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 0.1, duration: 0.3 }}
-              ></motion.div>
+              </p>
+              <div className="w-full h-1 bg-yellow-400 mb-8"></div>
 
-              <motion.div
-                className="flex flex-col sm:flex-row justify-center gap-4 mt-4"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.3 }}
-              >
+              <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
                 <GameButton
                   icon={Download}
                   onClick={handleExportQuestions}
@@ -605,9 +577,9 @@ const GameBoard = () => {
                 >
                   Start Game
                 </GameButton>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+              </div>
+            </div>
+          </div>
         ) : (
           <motion.div key="game-board" {...fadeIn}>
             {/* Edit Mode Header */}
